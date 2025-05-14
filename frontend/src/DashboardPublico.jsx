@@ -1,0 +1,40 @@
+import { Link, useNavigate } from 'react-router-dom';
+
+const DashboardPublico = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('userRole');
+    navigate('/');
+  };
+
+  return (
+    <div className="dashboard-layout">
+      <nav className="main-menu">
+        <h2 className="menu-title">Menú Principal</h2>
+        <ul className="menu-list">
+          {/* Usar rutas absolutas */}
+          <li className="menu-item">
+            <Link to="/citas" className="menu-link">Citas</Link>
+          </li>
+          <li className="menu-item">
+            <Link to="/realizar-evaluacion" className="menu-link">Realizar Evaluación</Link>
+          </li>
+          <li className="menu-item">
+            <Link to="/historial" className="menu-link">Historial</Link>
+          </li>
+          <li className="menu-item">
+            <Link to="/perfil" className="menu-link">Mi Perfil</Link>
+          </li>
+          <li className="menu-item">
+            <button className="logout-button" onClick={handleLogout}>
+              Cerrar Sesión
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  );
+};
+
+export default DashboardPublico;
