@@ -13,24 +13,24 @@ import RegistrarPaciente from './RegistrarPaciente';
 import EvaluarExpediente from './EvaluarExpediente';
 import './styles.css';
 
+// main.jsx (versión corregida)
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/registro" element={<Register />} />
 
-      {/* Eliminar rutas anidadas */}
+      {/* Ruta pública */}
       <Route path="/dashboard-publico" element={<DashboardPublico />} />
-      <Route path="/citas" element={<Citas />} />
       <Route path="/realizar-evaluacion" element={<RealizarEvaluacion />} />
+      <Route path="/citas" element={<Citas />} />
       <Route path="/historial" element={<HistorialEvaluaciones />} />
       <Route path="/perfil" element={<Perfil />} />
 
+      {/* Ruta profesional */}
       <Route path="/dashboard-profesional" element={<DashboardProfesional />} />
       <Route path="/registrar-paciente" element={<RegistrarPaciente />} />
       <Route path="/evaluar-expediente" element={<EvaluarExpediente />} />
-      <Route path="/historial" element={<HistorialEvaluaciones />} />
-      <Route path="/perfil" element={<Perfil />} />
     </Routes>
   </BrowserRouter>
 );
