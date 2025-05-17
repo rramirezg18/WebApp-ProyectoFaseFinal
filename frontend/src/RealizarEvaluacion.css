@@ -1,0 +1,627 @@
+/* RealizarEvaluacion.css */
+
+/* ID único para el wrapper de esta página si necesitas estilos específicos */
+/* Hereda .spectral-landing-background y los estilos de #header, #menu-dashboard, #footer 
+   de un CSS global como DashboardPublico.css o el CSS principal de la plantilla si se importa globalmente.
+   Asegúrate de que la clase .spectral-landing-background esté definida y aplicando el fondo "nublado".
+*/
+
+#realizar-evaluacion-page-wrapper #main .wrapper.style5 .inner {
+    max-width: 80em; /* Aumentar un poco el ancho si es necesario para formularios largos */
+    padding-top: 2em;
+    padding-bottom: 3em;
+}
+
+.evaluation-form fieldset.form-section {
+    border: 1px solid #e0e0e0; /* Borde más suave para las secciones */
+    border-radius: 6px; /* Bordes ligeramente más redondeados */
+    padding: 1.2em 1.8em 1.8em 1.8em; /* Reducido ligeramente */
+    margin-bottom: 2.5em; /* Reducido ligeramente */
+    background-color: #fdfdfd; /* Fondo muy sutil para diferenciar del blanco puro */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04); /* Sombra muy ligera */
+}
+
+.evaluation-form fieldset.form-section legend {
+    font-size: 1.25em; /* Reducido */
+    font-weight: 700; /* Un poco más de peso */
+    color: #2e3842; /* Color oscuro para el título de la sección */
+    padding: 0 0.7em; /* Reducido */
+    margin-left: -0.7em; /* Ajuste para alinear con el padding del fieldset si el fieldset tiene padding */
+    /* Si el fieldset NO tiene padding izquierdo, o el legend está fuera, este margin-left puede no ser necesario o diferente */
+    width: auto; /* Para que el legend no ocupe todo el ancho */
+    border-bottom: none; /* Quitar borde inferior por defecto de legend en algunos navegadores */
+    background-color: #fdfdfd; /* Para que el fondo del legend coincida */
+    position: relative;
+    top: -0.05em; /* Pequeño ajuste para que el texto no se corte con el borde del fieldset */
+}
+
+/* Estilos para las columnas DENTRO de .evaluation-form .row.gtr-uniform */
+.evaluation-form .row.gtr-uniform > div[class*="col-"] {
+    display: flex; /* Asegura que la columna sea un contenedor flex */
+    flex-direction: column; /* Apila label e input verticalmente */
+    justify-content: flex-start; /* Alinea el contenido al inicio de la columna (útil si hay alturas variables) */
+    padding-bottom: 1em; /* Espacio vertical consistente debajo de cada "grupo" de campo */
+    /* El padding horizontal (izquierdo) es aplicado por Spectral basado en las clases gtr-* */
+}
+
+.evaluation-form label {
+    display: block;
+    font-size: 0.78em; /* Reducido (aprox -10% de 0.85em) */
+    font-weight: 600; 
+    color: #333; /* Color de label más oscuro */
+    margin-bottom: 0.35em; /* Reducido */
+    text-align: left; 
+    width: 100%; /* Asegurar que el label no cause desbordamiento */
+}
+
+.evaluation-form input[type="text"],
+.evaluation-form input[type="number"],
+.evaluation-form input[type="email"], 
+.evaluation-form input[type="date"],
+.evaluation-form select,
+.evaluation-form textarea {
+    width: 100%; /* CRUCIAL para que ocupe el ancho de la columna */
+    box-sizing: border-box; /* MUY IMPORTANTE */
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    color: #4E4852;
+    border-radius: 3px; /* Un poco menos redondeado para ser más compacto */
+    height: 2.45em; /* Reducido (aprox -10% de 2.75em) */
+    padding: 0 0.8em; /* Reducido */
+    line-height: 2.45em; /* Para centrar texto verticalmente en inputs de una línea */
+    font-size: 0.82em; /* Reducido (aprox -10% de 0.9em) */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    /* Evitar que los inputs/selects crezcan o se encojan de forma inesperada */
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+.evaluation-form input[type="date"] {
+    line-height: normal; 
+    padding: 0.5em 0.8em; /* Reducido */
+}
+
+
+.evaluation-form textarea {
+    line-height: 1.5; /* Mantenido para legibilidad */
+    padding: 0.65em 0.8em; /* Reducido */
+    min-height: 6em; /* Reducido */
+    height: auto;
+}
+
+.evaluation-form input:focus,
+.evaluation-form select:focus,
+.evaluation-form textarea:focus {
+    border-color: #21b2a6;
+    box-shadow: 0 0 0 1px #21b2a6; /* Sombra más fina al enfocar */
+}
+
+.evaluation-form select {
+     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' preserveAspectRatio='none' viewBox='0 0 40 40'%3E%3Cpath d='M9.4,12.3l10.4,10.4l10.4-10.4c0.2-0.2,0.5-0.4,0.9-0.4c0.3,0,0.6,0.1,0.9,0.4l3.3,3.3c0.2,0.2,0.4,0.5,0.4,0.9 c0,0.4-0.1,0.6-0.4,0.9L20.7,31.9c-0.2,0.2-0.5,0.4-0.9,0.4c-0.3,0-0.6-0.1-0.9-0.4L4.3,17.3c-0.2-0.2-0.4-0.5-0.4-0.9 c0-0.4,0.1-0.6,0.4-0.9l3.3-3.3c0.2-0.2,0.5-0.4,0.9-0.4S9.1,12.1,9.4,12.3z' fill='%23bbbbbb' /%3E%3C/svg%3E"); /* Flecha un poco más oscura si es necesario */
+     padding-right: 2.45em; /* Ajustado a la nueva altura */
+}
+
+/* Mensajes de error debajo de los campos */
+.error-text {
+    display: block;
+    color: #ed4933;
+    font-size: 0.75em; /* Reducido */
+    margin-top: 0.3em; /* Reducido */
+    text-align: left;
+    width: 100%; 
+    line-height: 1.2; 
+}
+
+/* Grupo de Checkboxes para Diagnósticos */
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0.4em; /* Reducido */
+    margin-left: -0.7em; 
+    margin-right: -0.7em;
+}
+
+.checkbox-group .checkbox-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.4em; /* Reducido */
+    padding-left: 0.7em; /* Para compensar el margen negativo del padre */
+    padding-right: 0.7em;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 0.5em; /* Reducido */
+    position: relative;
+    top: -0.05em; 
+    transform: scale(0.9); /* Hacer el checkbox un poco más pequeño */
+}
+.evaluation-form .checkbox-group input[type="checkbox"] + label {
+    font-weight: normal;
+    color: #4E4852;
+    padding-left: 0; 
+    margin-bottom: 0;
+    cursor: pointer;
+    position: relative; 
+    font-size: 0.82em; /* Reducido, igual que los inputs */
+}
+
+/* Botones de Acción del Formulario */
+.evaluation-form .actions.special.stacked {
+    margin-top: 2.5em; /* Reducido */
+}
+
+.evaluation-form .actions.special.stacked li {
+    padding-top: 0.6em; /* Reducido */
+}
+
+.evaluation-form .button.primary.fit.large, 
+.evaluation-form .button.fit.large {
+    font-size: 0.9em; /* Reducido */
+    letter-spacing: 0.12em; /* Reducido */
+    padding: 0 2.2em; /* Reducido */
+    height: 3.15em; /* Reducido (aprox -10% de 3.5em) */
+    line-height: 3.15em; 
+}
+.evaluation-form .button.fit.large:not(.primary) {
+    background-color: #f0f0f0;
+    color: #555;
+    box-shadow: none;
+    border: 1px solid #ddd;
+}
+.evaluation-form .button.fit.large:not(.primary):hover {
+    background-color: #e0e0e0;
+}
+
+.error-message {
+    color: #ed4933;
+    background-color: rgba(237, 73, 51, 0.1);
+    border: 1px solid #ed4933;
+    padding: 0.9em; /* Reducido */
+    border-radius: 4px;
+    margin: 0.9em auto; 
+    text-align: center;
+    max-width: 90%;
+}
+
+.is-loading-placeholder #main .wrapper.style5 .inner p {
+    text-align: center;
+    font-size: 1.1em; /* Reducido */
+    color: #777;
+    padding: 2.5em 0; /* Reducido */
+}
+
+.evaluation-form fieldset {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+/* Ajustes responsivos para el formulario compacto */
+@media screen and (max-width: 736px) { /* 'small' breakpoint */
+    .evaluation-form label {
+        font-size: 0.8em; /* Un poco más grande en móviles para legibilidad */
+    }
+    .evaluation-form input[type="text"],
+    .evaluation-form input[type="number"],
+    .evaluation-form input[type="email"], 
+    .evaluation-form input[type="date"],
+    .evaluation-form select,
+    .evaluation-form textarea {
+        font-size: 0.85em; /* Un poco más grande en móviles */
+        height: 2.6em; /* Ajustar altura para móviles */
+        line-height: 2.6em;
+    }
+    .evaluation-form input[type="date"] {
+        line-height: normal;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+    .evaluation-form textarea {
+        padding: 0.6em 0.8em;
+    }
+    .evaluation-form .button.primary.fit.large, 
+    .evaluation-form .button.fit.large {
+        font-size: 0.85em;
+        height: 3em;
+        line-height: 3em;
+    }
+    .checkbox-group input[type="checkbox"] {
+        transform: scale(0.85); /* Checkboxes un poco más pequeños en móvil también */
+    }
+    .evaluation-form .checkbox-group input[type="checkbox"] + label {
+        font-size: 0.85em;
+    }
+}
+
+/* --- ESTILOS DE LAYOUT Y MENÚ (COPIADOS/ADAPTADOS DE PageLayout.css o DashboardPublico.css) --- */
+/* Asegúrate que estos selectores usen el ID correcto: #realizar-evaluacion-page-wrapper */
+
+#realizar-evaluacion-page-wrapper { /* ID específico para esta página */
+    position: relative;
+    flex-grow: 1;
+    transition: opacity 0.5s ease;
+}
+
+#realizar-evaluacion-page-wrapper #header {
+    color: #fff;
+    cursor: default;
+    height: 3em;
+    left: 0;
+    line-height: 3em;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000; 
+    transition: background-color 0.2s ease;
+}
+
+#realizar-evaluacion-page-wrapper #header.alt {
+    background: transparent;
+}
+#realizar-evaluacion-page-wrapper #header.header-solid {
+    background: #2e3842;
+}
+
+#realizar-evaluacion-page-wrapper #header h1 {
+    color: #fff;
+    font-weight: 800;
+    height: inherit;
+    left: 1.25em;
+    letter-spacing: 0.225em;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    text-transform: uppercase;
+    font-size: 1em;
+}
+
+#realizar-evaluacion-page-wrapper #header h1 a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none;
+}
+
+#realizar-evaluacion-page-wrapper #header nav {
+    height: inherit;
+    line-height: inherit;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#realizar-evaluacion-page-wrapper #header nav > ul {
+    list-style: none;
+    margin: 0;
+    padding-right: 0.25em;
+    white-space: nowrap;
+}
+
+#realizar-evaluacion-page-wrapper #header nav > ul > li {
+    display: inline-block;
+    padding-left: 0;
+}
+
+#realizar-evaluacion-page-wrapper #header nav > ul > li > a.menuToggle {
+    border: 0;
+    color: #fff;
+    display: block;
+    font-size: 0.8em;
+    letter-spacing: 0.225em;
+    padding: 0 1.75em 0 1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    outline: 0;
+    position: relative;
+}
+
+#realizar-evaluacion-page-wrapper #header nav > ul > li > a.menuToggle:after {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='%23ffffff'%3E%3Cpath stroke='rgba(255,255,255,1)' stroke-width='3' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    content: '';
+    display: inline-block;
+    height: 100%;
+    width: 30px;
+    margin-left: 0.5em;
+    vertical-align: middle;
+}
+
+/* --- Menu Desplegable (id="menu-dashboard" en el JSX) --- */
+#menu-dashboard { 
+    transform: translateX(20em);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    -webkit-overflow-scrolling: touch;
+    background: #2e3842; 
+    color: #ffffff;
+    height: 100%;
+    max-width: 80%;
+    overflow-y: auto;
+    padding: 2.5em 2em;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 20em;
+    z-index: 10002;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.25); 
+}
+
+#menu-dashboard .close {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 22px 22px;
+    border: 0;
+    cursor: pointer;
+    display: block;
+    height: 3em;
+    position: absolute;
+    right: 0.5em;
+    top: 0.25em;
+    width: 3em;
+    text-indent: -9999px;
+}
+
+#menu-dashboard ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#menu-dashboard ul > li {
+    border-top: solid 1px rgba(255, 255, 255, 0.1); 
+    margin: 0.5em 0 0 0;
+    padding: 0.5em 0 0 0;
+}
+
+#menu-dashboard ul > li:first-child {
+    border-top: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+#menu-dashboard ul > li > a,
+#menu-dashboard ul > li > button.menu-button-link-style { 
+    border-bottom: none !important;
+    color: rgba(255, 255, 255, 0.75); 
+    display: block;
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    outline: 0;
+    padding: 0.85em 0;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s ease-in-out;
+    background: transparent;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    line-height: normal;
+}
+
+#menu-dashboard ul > li > a:hover,
+#menu-dashboard ul > li > button.menu-button-link-style:hover {
+    color: #00ffcc; 
+}
+
+#menu-dashboard ul > li > button.logout-button-sidemenu {
+    background-color: rgba(0,0,0,0.25) !important; 
+    color: #fff !important;
+    margin-top: 0.75em;
+    padding: 0.85em 1em !important; 
+    height: auto !important;
+    line-height: normal !important;
+    box-shadow: none !important;
+    border-radius: 3px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+#menu-dashboard ul > li > button.logout-button-sidemenu:hover {
+    background-color: rgba(0,0,0,0.4) !important; 
+    color: #00ffcc !important; 
+}
+
+/* --- CORRECCIÓN: Efectos cuando el menú está visible para ESTA PÁGINA --- */
+#realizar-evaluacion-page-wrapper.is-menu-visible-layout { 
+    opacity: 1; 
+}
+#realizar-evaluacion-page-wrapper.is-menu-visible-layout:before { 
+    display: none; 
+}
+
+#realizar-evaluacion-page-wrapper.is-menu-visible-layout #menu-dashboard { 
+    transform: translateX(0); 
+}
+
+/* --- Contenido Principal --- */
+#realizar-evaluacion-page-wrapper #main {
+    /* padding-top: 3em; ya en .spectral-landing-background */
+}
+#realizar-evaluacion-page-wrapper #main > header.page-header-main {
+    padding: 7em 2em 5em 2em;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+#realizar-evaluacion-page-wrapper #main > header.page-header-main h2 {
+    font-size: 2.2em;
+    margin: 0 0 0.5em 0;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.225em;
+    font-weight: 800;
+}
+
+#realizar-evaluacion-page-wrapper #main > header.page-header-main p {
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.075em;
+    text-transform: uppercase;
+    top: 0;
+}
+
+#realizar-evaluacion-page-wrapper #main .wrapper.style5 {
+    background-color: #fff;
+    color: #4E4852; 
+    padding: 4em 0;
+}
+#realizar-evaluacion-page-wrapper #main .wrapper.style5 .inner {
+    width: 90%; 
+    max-width: 75em; 
+    margin: 0 auto;
+}
+
+.dashboard-content { /* Reutilizado de DashboardPublico.css, asegúrate que sea genérico o renómbralo */
+    padding: 1em 0; 
+}
+.dashboard-section { /* Reutilizado */
+    margin-bottom: 3em; 
+}
+.dashboard-section:last-child {
+    margin-bottom: 0;
+}
+.dashboard-section header.major {
+    margin-bottom: 2em; 
+    text-align: left; 
+}
+.dashboard-section header.major h3 {
+    color: #2e3842; 
+    border-bottom: 2px solid #e1e1e1; 
+    padding-bottom: 0.5em;
+    display: inline-block; 
+}
+.dashboard-section header.major p {
+    color: #7f8c8d; 
+    font-size: 1em;
+    margin-top: 0.5em;
+}
+
+
+/* --- Footer (id="footer") --- */
+#realizar-evaluacion-page-wrapper #footer {
+    padding: 4em 0 2em 0;
+    background-color: rgba(29, 36, 42, 0.9);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    position: relative; 
+    z-index: 1;
+}
+
+#realizar-evaluacion-page-wrapper #footer .icons {
+    font-size: 1.25em;
+    margin-bottom: 1em;
+}
+#realizar-evaluacion-page-wrapper #footer .icons a {
+    color: rgba(255, 255, 255, 0.5);
+    border-bottom: none;
+}
+#realizar-evaluacion-page-wrapper #footer .icons a:hover {
+    color: #fff;
+}
+#realizar-evaluacion-page-wrapper #footer .copyright {
+    font-size: 0.8em;
+    letter-spacing: 0.225em;
+    list-style: none;
+    padding: 0;
+    text-transform: uppercase;
+    margin:0;
+}
+#realizar-evaluacion-page-wrapper #footer .copyright li {
+    border-left: solid 1px rgba(255, 255, 255, 0.3);
+    display: inline-block;
+    line-height: 1em;
+    margin-left: 1em;
+    padding-left: 1em;
+}
+#realizar-evaluacion-page-wrapper #footer .copyright li:first-child {
+    border-left: 0;
+    margin-left: 0;
+    padding-left: 0;
+}
+#realizar-evaluacion-page-wrapper #footer .copyright li a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none;
+}
+#realizar-evaluacion-page-wrapper #footer .copyright li a:hover {
+    color: #fff;
+}
+
+/* Responsive */
+@media screen and (max-width: 736px) {
+    #realizar-evaluacion-page-wrapper #header h1 {
+        font-size: 0.9em;
+        left: 1em;
+    }
+    #realizar-evaluacion-page-wrapper #header nav > ul > li > a.menuToggle {
+        padding: 0 1.25em 0 0.75em;
+    }
+    #menu-dashboard { 
+        padding: 2.5em 1.5em;
+        width: 100%;
+        max-width: 100%;
+        transform: translateX(100%);
+    }
+    #realizar-evaluacion-page-wrapper.is-menu-visible-layout #menu-dashboard {
+        transform: translateX(0);
+    }
+    #realizar-evaluacion-page-wrapper #main > header.page-header-main {
+        padding: 6em 1.5em 4em 1.5em;
+    }
+    #realizar-evaluacion-page-wrapper #main > header.page-header-main h2 {
+        font-size: 1.8em;
+    }
+    #realizar-evaluacion-page-wrapper #main .wrapper.style5 {
+        padding: 3em 1em; 
+    }
+    .evaluation-form fieldset.form-section {
+        padding: 1em 1.2em 1.2em 1.2em; 
+    }
+    .evaluation-form fieldset.form-section legend {
+        font-size: 1.1em; 
+    }
+
+    .evaluation-form label {
+        font-size: 0.8em; 
+    }
+    .evaluation-form input[type="text"],
+    .evaluation-form input[type="number"],
+    .evaluation-form input[type="email"], 
+    .evaluation-form input[type="date"],
+    .evaluation-form select,
+    .evaluation-form textarea {
+        font-size: 0.85em; 
+        height: 2.6em; 
+        line-height: 2.6em;
+    }
+    .evaluation-form input[type="date"] {
+        line-height: normal;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+    .evaluation-form textarea {
+        padding: 0.6em 0.8em;
+    }
+    .evaluation-form .button.primary.fit.large, 
+    .evaluation-form .button.fit.large {
+        font-size: 0.85em;
+        height: 3em;
+        line-height: 3em;
+    }
+    .checkbox-group input[type="checkbox"] {
+        transform: scale(0.85); 
+    }
+    .evaluation-form .checkbox-group input[type="checkbox"] + label {
+        font-size: 0.85em;
+    }
+}

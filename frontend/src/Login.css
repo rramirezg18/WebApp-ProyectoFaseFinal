@@ -1,0 +1,328 @@
+/* Login.css - Estilos para el diseño de dos columnas */
+
+/* Estilo para el fondo de la página de login, imitando el banner de Spectral */
+.spectral-landing-background {
+    /* Reemplaza '/images/fondo-login.jpg' con la ruta a tu imagen de fondo en la carpeta public */
+    /* Asegúrate que la ruta sea accesible desde la carpeta public, o usa una URL completa */
+    background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)), url('/images/fondo-login.jpg');
+    background-attachment: fixed;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh; /* Asegura que cubra toda la altura */
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif; /* Added a fallback font family */
+}
+
+/* Ajustes para el contenido principal dentro del fondo */
+.spectral-landing-background .wrapper {
+    background-color: transparent; /* El wrapper ahora es transparente para mostrar el fondo de la página */
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 4em; /* Más padding para separar del borde superior */
+    padding-bottom: 4em;
+    width: 100%; /* Ensure wrapper takes full width for centering its content */
+}
+
+.spectral-landing-background .wrapper > .inner {
+    width: 100%;
+    max-width: 80em; /* Ancho del contenido de dos columnas */
+    margin-left: auto; /* Center the inner content */
+    margin-right: auto; /* Center the inner content */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Grid system basic classes (if not provided by main.css or similar) */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px; /* Adjust gutter as needed */
+    margin-right: -15px; /* Adjust gutter as needed */
+}
+
+.col-6, .col-12-medium {
+    padding-left: 15px; /* Adjust gutter as needed */
+    padding-right: 15px; /* Adjust gutter as needed */
+    box-sizing: border-box;
+}
+
+.col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+/* Gutter adjustment from your original code */
+.row.gtr-100 {
+    margin-left: -50px; /* Example: if gtr-100 means 100px total gutter, then 50px per side */
+    margin-right: -50px;
+}
+.row.gtr-100 > [class*="col-"] {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.row.gtr-uniform {
+    margin-left: -0.75em; 
+    margin-right: -0.75em;
+}
+
+.row.gtr-uniform > .col-12 {
+    padding: 0.75em; 
+}
+
+
+.align-items-center {
+    align-items: center;
+}
+
+
+/* Columna de Información (Izquierda) */
+.login-info-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra el contenido verticalmente en la columna */
+    padding: 2em; /* Espaciado interno */
+    color: #fff; /* Texto blanco para contraste con fondo oscuro */
+}
+
+.login-info-content .image.main {
+    display: block; /* Remove extra space below image */
+    margin-bottom: 1.5em; /* Space below image */
+}
+
+.login-info-content .image.main img {
+    border-radius: 8px; /* Bordes ligeramente redondeados para la imagen */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35); /* Sombra más intensa */
+    border: 2px solid rgba(255, 255, 255, 0.15); /* Borde un poco más visible */
+    max-width: 100%; /* Asegura que la imagen no se desborde */
+    height: auto; /* Mantiene la proporción de la imagen */
+    display: block; 
+}
+
+.login-info-content h3 {
+    color: #fff;
+    margin-top: 1.5em;
+    font-weight: 600; 
+    letter-spacing: 0.075em; 
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3); 
+}
+
+.login-info-content p {
+    color: rgba(255, 255, 255, 0.85); 
+    font-size: 1em; 
+    line-height: 1.7;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2); 
+}
+.login-info-content p a {
+    color: #00ffcc; 
+    border-bottom: 1px solid rgba(0, 255, 204, 0.6); /* Adjusted for standard link underline */
+    text-decoration: none; /* Remove default underline if using border-bottom */
+    font-weight: 600; 
+}
+.login-info-content p a:hover {
+    color: #fff; 
+    border-bottom-color: #fff; 
+}
+
+
+/* Columna del Formulario (Derecha) */
+.login-form-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+}
+
+.login-form-wrapper {
+    background-color: rgba(29, 36, 42, 0.75); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 4px solid #ed4933; 
+    padding: 2.5em 3em; 
+    border-radius: 10px; 
+    color: #fff;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px); 
+    -webkit-backdrop-filter: blur(5px); 
+}
+
+.login-form-wrapper h2 {
+    text-align: center;
+    margin-bottom: 1.2em;
+    color: #fff;
+    font-weight: 700; 
+    letter-spacing: 0.12em; 
+    text-transform: uppercase; 
+}
+
+/* Estilos para los inputs y select dentro del formulario */
+.login-form-wrapper input[type="text"],
+.login-form-wrapper input[type="password"],
+.login-form-wrapper input[type="email"],
+.login-form-wrapper select {
+    width: 100%; /* Make inputs take full width of their container */
+    box-sizing: border-box; /* Include padding and border in width */
+    margin-bottom: 1.35em; 
+    background-color: rgba(255, 255, 255, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.25); 
+    color: #fff; 
+    border-radius: 5px; 
+    height: 3.125em; 
+    padding: 0 1.25em; 
+    font-size: 0.9em; 
+}
+.login-form-wrapper input[type="text"]::placeholder,
+.login-form-wrapper input[type="password"]::placeholder,
+.login-form-wrapper input[type="email"]::placeholder {
+    color: rgba(255, 255, 255, 0.65); 
+}
+
+.login-form-wrapper select {
+    appearance: none; /* Remove default system appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' preserveAspectRatio='none' viewBox='0 0 40 40'%3E%3Cpath d='M9.4,12.3l10.4,10.4l10.4-10.4c0.2-0.2,0.5-0.4,0.9-0.4c0.3,0,0.6,0.1,0.9,0.4l3.3,3.3c0.2,0.2,0.4,0.5,0.4,0.9 c0,0.4-0.1,0.6-0.4,0.9L20.7,31.9c-0.2,0.2-0.5,0.4-0.9,0.4c-0.3,0-0.6-0.1-0.9-0.4L4.3,17.3c-0.2-0.2-0.4-0.5-0.4-0.9 c0-0.4,0.1-0.6,0.4-0.9l3.3-3.3c0.2-0.2,0.5-0.4,0.9-0.4S9.1,12.1,9.4,12.3z' fill='rgba(255,255,255,0.65)' /%3E%3C/svg%3E"); 
+    background-repeat: no-repeat;
+    background-position: right 0.75em center;
+    background-size: 1.25em;
+    padding-right: 2.75em; 
+}
+.login-form-wrapper select option {
+    color: #2e3842; 
+    background-color: #fff; 
+}
+
+
+.login-form-wrapper .actions {
+    list-style: none; /* Remove bullet points */
+    padding-left: 0; /* Remove default padding */
+    margin-top: 1.75em; 
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; 
+}
+.login-form-wrapper .actions li {
+    padding-left: 0; 
+}
+.login-form-wrapper .button.primary {
+    min-width: 180px; 
+    padding: 0 2.5em; 
+    font-weight: 700; 
+    letter-spacing: 0.1em; 
+    background-color: #ed4933; 
+    color: #fff; /* Ensure text is white */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Match input fields */
+    height: 3.125em; /* Match input fields */
+    line-height: 3.125em; /* Vertically center text */
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none; /* If it's an <a> styled as button */
+    display: inline-block; /* Proper button behavior */
+    box-shadow: none; 
+}
+.login-form-wrapper .button.primary:hover {
+    background-color: #ef5e4a !important; 
+}
+.login-form-wrapper .button.primary:active {
+    background-color: #eb341c !important; 
+}
+.login-form-wrapper .button.primary:disabled {
+    background-color: #ccc !important;
+    color: #666 !important;
+    cursor: not-allowed;
+}
+
+
+/* Mensaje de error */
+.error-message {
+    color: #f5c6cb; 
+    background-color: rgba(248, 215, 218, 0.15); 
+    border: 1px solid rgba(248, 215, 218, 0.3); 
+    padding: 0.85em 1em;
+    border-radius: 5px;
+    margin-top: 1em; 
+    margin-bottom: 0.5em; 
+    text-align: center;
+    font-size: 0.9em;
+}
+
+/* Enlace de registro y otros textos pequeños en el formulario */
+.login-form-wrapper p {
+    font-size: 0.9em;
+    color: rgba(255,255,255,0.75);
+    margin-top: 1.5em; 
+    text-align: center; /* Center the registration link */
+}
+.login-form-wrapper p a {
+    color: #00ffcc; 
+    border-bottom: 1px solid rgba(0, 255, 204, 0.6); /* Standard link underline */
+    text-decoration: none;
+    font-weight: 600;
+}
+.login-form-wrapper p a:hover {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+
+/* Media Queries */
+@media screen and (max-width: 980px) { /* 'medium' breakpoint */
+    .col-12-medium { /* This makes columns stack on medium screens */
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .spectral-landing-background .wrapper > .inner {
+        max-width: 90%; 
+    }
+    .login-info-column {
+        text-align: center; 
+        margin-bottom: 2em; 
+        padding: 1em; 
+    }
+    .login-info-content .image.main {
+        max-width: 250px; 
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .login-form-wrapper {
+        padding: 2em; 
+    }
+}
+
+@media screen and (max-width: 736px) { /* 'small' breakpoint */
+    .spectral-landing-background .wrapper {
+        padding-top: 2em; 
+        padding-bottom: 2em;
+    }
+    .spectral-landing-background .wrapper > .inner {
+        max-width: 100%; 
+        padding-left: 1em; 
+        padding-right: 1em;
+    }
+
+    .login-form-wrapper {
+        padding: 1.5em; 
+    }
+    .login-form-wrapper h2 {
+        font-size: 1.3em; 
+        margin-bottom: 1em;
+    }
+    .login-form-wrapper input[type="text"],
+    .login-form-wrapper input[type="password"],
+    .login-form-wrapper input[type="email"],
+    .login-form-wrapper select {
+        margin-bottom: 1em;
+        font-size: 1em; 
+        height: 3em; 
+    }
+    .login-form-wrapper .button.primary {
+        font-size: 0.9em; 
+        width: 100%; 
+        padding: 0 1.5em; 
+        height: 3em;
+        line-height: 3em;
+    }
+    .login-form-wrapper .actions {
+        justify-content: center; 
+    }
+}

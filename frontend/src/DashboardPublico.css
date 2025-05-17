@@ -1,0 +1,364 @@
+/* DashboardPublico.css */
+
+/* Fondo estilo "landing page" de Spectral */
+/* Esta clase debe estar definida en un CSS global (como Login.css o App.css) */
+/* Si no, descomenta y define aquí. Asegúrate que la ruta a la imagen es correcta. */
+/*
+.spectral-landing-background {
+    background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)), url('/images/fondo-layout.jpg');
+    background-attachment: fixed;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 3em; // Altura del header fijo
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+*/
+
+/* ID único para el wrapper de esta página si necesitas estilos específicos */
+#dashboard-publico-page-wrapper {
+    position: relative;
+    flex-grow: 1;
+    transition: opacity 0.5s ease;
+    /* El padding-top ya debería estar en .spectral-landing-background */
+}
+
+/* --- Header (id="header") --- */
+#dashboard-publico-page-wrapper #header {
+    color: #fff;
+    cursor: default;
+    height: 3em;
+    left: 0;
+    line-height: 3em;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000; 
+    transition: background-color 0.2s ease;
+}
+
+#dashboard-publico-page-wrapper #header.alt {
+    background: transparent;
+}
+#dashboard-publico-page-wrapper #header.header-solid {
+    background: #2e3842;
+}
+
+#dashboard-publico-page-wrapper #header h1 {
+    color: #fff;
+    font-weight: 800;
+    height: inherit;
+    left: 1.25em;
+    letter-spacing: 0.225em;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    text-transform: uppercase;
+    font-size: 1em;
+}
+
+#dashboard-publico-page-wrapper #header h1 a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none;
+}
+
+#dashboard-publico-page-wrapper #header nav {
+    height: inherit;
+    line-height: inherit;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#dashboard-publico-page-wrapper #header nav > ul {
+    list-style: none;
+    margin: 0;
+    padding-right: 0.25em;
+    white-space: nowrap;
+}
+
+#dashboard-publico-page-wrapper #header nav > ul > li {
+    display: inline-block;
+    padding-left: 0;
+}
+
+#dashboard-publico-page-wrapper #header nav > ul > li > a.menuToggle {
+    border: 0;
+    color: #fff;
+    display: block;
+    font-size: 0.8em;
+    letter-spacing: 0.225em;
+    padding: 0 1.75em 0 1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    outline: 0;
+    position: relative;
+}
+
+#dashboard-publico-page-wrapper #header nav > ul > li > a.menuToggle:after {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='%23ffffff'%3E%3Cpath stroke='rgba(255,255,255,1)' stroke-width='3' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    content: '';
+    display: inline-block;
+    height: 100%;
+    width: 30px;
+    margin-left: 0.5em;
+    vertical-align: middle;
+}
+
+/* --- Menu Desplegable (id="menu-dashboard") --- */
+#menu-dashboard {
+    transform: translateX(20em);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    -webkit-overflow-scrolling: touch;
+    background: #2e3842; 
+    color: #ffffff;
+    height: 100%;
+    max-width: 80%;
+    overflow-y: auto;
+    padding: 2.5em 2em;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 20em;
+    z-index: 10002;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.25); 
+}
+
+#menu-dashboard .close {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 22px 22px;
+    border: 0;
+    cursor: pointer;
+    display: block;
+    height: 3em;
+    position: absolute;
+    right: 0.5em;
+    top: 0.25em;
+    width: 3em;
+    text-indent: -9999px;
+}
+
+#menu-dashboard ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#menu-dashboard ul > li {
+    border-top: solid 1px rgba(255, 255, 255, 0.1); 
+    margin: 0.5em 0 0 0;
+    padding: 0.5em 0 0 0;
+}
+
+#menu-dashboard ul > li:first-child {
+    border-top: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+#menu-dashboard ul > li > a,
+#menu-dashboard ul > li > button.menu-button-link-style { 
+    border-bottom: none !important;
+    color: rgba(255, 255, 255, 0.75); 
+    display: block;
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    outline: 0;
+    padding: 0.85em 0;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s ease-in-out;
+    background: transparent;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    line-height: normal;
+}
+
+#menu-dashboard ul > li > a:hover,
+#menu-dashboard ul > li > button.menu-button-link-style:hover {
+    color: #00ffcc; 
+}
+
+#menu-dashboard ul > li > button.logout-button-sidemenu {
+    background-color: rgba(0,0,0,0.25) !important; 
+    color: #fff !important;
+    margin-top: 0.75em;
+    padding: 0.85em 1em !important; 
+    height: auto !important;
+    line-height: normal !important;
+    box-shadow: none !important;
+    border-radius: 3px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+#menu-dashboard ul > li > button.logout-button-sidemenu:hover {
+    background-color: rgba(0,0,0,0.4) !important; 
+    color: #00ffcc !important; 
+}
+
+
+/* Efectos cuando el menú está visible */
+#dashboard-publico-page-wrapper.is-menu-visible-layout {
+    opacity: 1; /* CAMBIO: Sin cambio de opacidad en el contenido principal */
+}
+#dashboard-publico-page-wrapper.is-menu-visible-layout:before {
+    /* background: rgba(0, 0, 0, 0.6); */ /* Original overlay oscuro */
+    display: none; /* CAMBIO: Eliminar el pseudo-elemento que crea el overlay */
+}
+
+#dashboard-publico-page-wrapper.is-menu-visible-layout #menu-dashboard {
+    transform: translateX(0);
+}
+
+/* --- Contenido Principal --- */
+#dashboard-publico-page-wrapper #main {
+    /* padding-top: 3em; ya en .spectral-landing-background */
+}
+#dashboard-publico-page-wrapper #main > header.page-header-main {
+    padding: 7em 2em 5em 2em;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+#dashboard-publico-page-wrapper #main > header.page-header-main h2 {
+    font-size: 2.2em;
+    margin: 0 0 0.5em 0;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.225em;
+    font-weight: 800;
+}
+
+#dashboard-publico-page-wrapper #main > header.page-header-main p {
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.075em;
+    text-transform: uppercase;
+    top: 0;
+}
+
+#dashboard-publico-page-wrapper #main .wrapper.style5 {
+    background-color: #fff;
+    color: #4E4852;
+    padding: 4em 0;
+}
+#dashboard-publico-page-wrapper #main .wrapper.style5 .inner {
+    width: 90%; 
+    max-width: 70em; 
+    margin: 0 auto;
+}
+
+.dashboard-content {
+    padding: 2em;
+    background-color: #fff; 
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    color: #2e3842; 
+}
+.dashboard-content h3 {
+    color: #2e3842;
+    margin-bottom: 1em;
+}
+
+
+/* --- Footer (id="footer") --- */
+#dashboard-publico-page-wrapper #footer {
+    padding: 4em 0 2em 0;
+    background-color: rgba(29, 36, 42, 0.9);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    position: relative; 
+    z-index: 1;
+}
+
+#dashboard-publico-page-wrapper #footer .icons {
+    font-size: 1.25em;
+    margin-bottom: 1em;
+}
+#dashboard-publico-page-wrapper #footer .icons a {
+    color: rgba(255, 255, 255, 0.5);
+    border-bottom: none;
+}
+#dashboard-publico-page-wrapper #footer .icons a:hover {
+    color: #fff;
+}
+#dashboard-publico-page-wrapper #footer .copyright {
+    font-size: 0.8em;
+    letter-spacing: 0.225em;
+    list-style: none;
+    padding: 0;
+    text-transform: uppercase;
+    margin:0;
+}
+#dashboard-publico-page-wrapper #footer .copyright li {
+    border-left: solid 1px rgba(255, 255, 255, 0.3);
+    display: inline-block;
+    line-height: 1em;
+    margin-left: 1em;
+    padding-left: 1em;
+}
+#dashboard-publico-page-wrapper #footer .copyright li:first-child {
+    border-left: 0;
+    margin-left: 0;
+    padding-left: 0;
+}
+#dashboard-publico-page-wrapper #footer .copyright li a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none;
+}
+#dashboard-publico-page-wrapper #footer .copyright li a:hover {
+    color: #fff;
+}
+
+/* Responsive */
+@media screen and (max-width: 736px) {
+    #dashboard-publico-page-wrapper #header h1 {
+        font-size: 0.9em;
+        left: 1em;
+    }
+    #dashboard-publico-page-wrapper #header nav > ul > li > a.menuToggle {
+        padding: 0 1.25em 0 0.75em;
+    }
+    #menu-dashboard {
+        padding: 2.5em 1.5em;
+        width: 100%;
+        max-width: 100%;
+        transform: translateX(100%);
+    }
+    #dashboard-publico-page-wrapper.is-menu-visible-layout #menu-dashboard {
+        transform: translateX(0);
+    }
+    #dashboard-publico-page-wrapper #main > header.page-header-main {
+        padding: 6em 1.5em 4em 1.5em;
+    }
+    #dashboard-publico-page-wrapper #main > header.page-header-main h2 {
+        font-size: 1.8em;
+    }
+    #dashboard-publico-page-wrapper #main .wrapper.style5 {
+        padding: 3em 1em; 
+    }
+    .dashboard-content {
+        padding: 1.5em;
+    }
+}
