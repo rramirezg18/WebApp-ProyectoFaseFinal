@@ -6,6 +6,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const app = express();
+const multer = require('multer');
+const path = require('path');
+app.use('/uploads', express.static('uploads')); // Servir archivos estáticos
+
+
 
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -29,6 +34,7 @@ const pool = mysql.createPool({
   waitForConnections: true,
 });
 
+
 // Middleware de autenticación (agregar después de la configuración de la BD)
 const authenticate = async (req, res, next) => {
   const token = req.cookies.token ||
@@ -46,6 +52,162 @@ const authenticate = async (req, res, next) => {
     res.status(401).json({ error: 'Token inválido o expirado' });
   }
 };
+
+
+// Configurar almacenamiento de imágenes
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Crear esta carpeta en el proyecto
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, `evaluacion-${req.params.id}-${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
+  }
+});
+
+// Filtro para solo imágenes
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Solo se permiten imágenes (JPEG/PNG)'), false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 } // Límite 5MB
+});
+
+
+app.post('/api/resultados', authenticate, async (req, res) => {
+  try {
+    const { evaluacionId, severidad, descripcion } = req.body;
+
+    // Guardar en BD
+    const [result] = await pool.query(
+      `INSERT INTO resultados 
+      (evaluacion_id, severidad, descripcion) 
+      VALUES (?, ?, ?)`,
+      [evaluacionId, severidad, descripcion]
+    );
+
+    res.json({ success: true, id: result.insertId });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error guardando resultados'
+    });
+  }
+});
+
+
+
+
+// Endpoint para subir fotos - Versión corregida
+app.post('/api/evaluaciones/:id/fotografias', authenticate, upload.fields([
+  { name: 'ojo_izquierdo', maxCount: 1 },
+  { name: 'ojo_derecho', maxCount: 1 }
+]), async (req, res) => {
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    // 1. Verificar permisos
+    const [evaluacion] = await connection.query(
+      `SELECT e.id 
+       FROM evaluaciones e
+       JOIN perfiles p ON e.perfil_id = p.perfil_id
+       WHERE p.user_id = ? AND e.id = ?`,
+      [req.user.id, req.params.id]
+    );
+
+    if (evaluacion.length === 0) {
+      return res.status(403).json({
+        success: false,
+        error: 'No tienes permiso para esta evaluación'
+      });
+    }
+
+    const evaluacionId = evaluacion[0].id;
+
+    // 2. Función para procesar cada ojo
+    const procesarOjo = async (tipo) => {
+      try {
+        if (!req.files?.[tipo]) return null;
+
+        const file = req.files[tipo][0];
+        const [existente] = await connection.query(
+          'SELECT id FROM fotografias WHERE evaluacion_id = ? AND tipo = ?',
+          [evaluacionId, tipo]
+        );
+
+        // Actualizar o insertar registro
+        if (existente.length > 0) {
+          await connection.query(
+            'UPDATE fotografias SET url_imagen = ? WHERE id = ?',
+            [file.filename, existente[0].id]
+          );
+        } else {
+          await connection.query(
+            'INSERT INTO fotografias (evaluacion_id, url_imagen, tipo) VALUES (?, ?, ?)',
+            [evaluacionId, file.filename, tipo]
+          );
+        }
+
+        return `http://localhost:5000/uploads/${file.filename}`;
+      } catch (error) {
+        console.error(`Error procesando ${tipo}:`, error);
+        throw error;
+      }
+    };
+
+    // 3. Procesar ambos ojos
+    const resultados = {
+      ojo_izquierdo: await procesarOjo('ojo_izquierdo'),
+      ojo_derecho: await procesarOjo('ojo_derecho')
+    };
+
+    await connection.commit();
+
+    // 4. Construir respuesta detallada
+    const responseData = {
+      success: true,
+      message: 'Fotos actualizadas correctamente',
+      fotos: [
+        {
+          tipo: 'ojo_izquierdo',
+          url: resultados.ojo_izquierdo || null,
+          status: resultados.ojo_izquierdo ? 'success' : 'no_changes'
+        },
+        {
+          tipo: 'ojo_derecho',
+          url: resultados.ojo_derecho || null,
+          status: resultados.ojo_derecho ? 'success' : 'no_changes'
+        }
+      ]
+    };
+
+    res.status(200).json(responseData);
+
+  } catch (error) {
+    await connection.rollback();
+    console.error('Error en subida de fotos:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor',
+      details: error.message
+    });
+  } finally {
+    connection.release();
+  }
+});
+
+
+
+
+
 
 // Modificar endpoint de login
 app.post('/api/login', async (req, res) => {

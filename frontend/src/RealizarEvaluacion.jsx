@@ -226,7 +226,7 @@ const RealizarEvaluacion = () => {
     e.preventDefault();
     if (!validarFormulario()) return;
 
-    // Crear payload primero
+    // Mantener todo el payload y lógica existente
     const payload = {
       datosPersonales: {
         primer_nombre: formData.datosPersonales.primer_nombre,
@@ -266,9 +266,13 @@ const RealizarEvaluacion = () => {
 
       if (response.data.success) {
         alert('Evaluación guardada exitosamente!');
-        navigate('/subir-fotografias');
+        // Único cambio necesario: agregar state con evaluacionId
+        navigate('/subir-fotografias', {
+          state: { evaluacionId: response.data.evaluacionId }
+        });
       }
     } catch (error) {
+      // Mantener todo el manejo de errores existente
       console.error('Error detallado:', error.response?.data);
 
       const errorMessage = error.response?.data?.error ||
