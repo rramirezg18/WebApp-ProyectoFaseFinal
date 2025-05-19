@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.3.0",
     "axios": "^1.9.0",
     "cookie-parser": "^1.4.7",
     "jsonwebtoken": "^9.0.2",
+    "pdfkit": "^0.17.1",
+    "pdfkit-table": "^0.1.99",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^6.30.0"

@@ -12,6 +12,7 @@ import Perfil from './Perfil';
 import RegistrarPaciente from './RegistrarPaciente';
 import EvaluarExpediente from './EvaluarExpediente';
 import SubirFotografias from './SubirFotografias';
+import Analisis from './Analisis';
 import './styles.css';
 
 // main.jsx (versión corregida)
@@ -34,14 +35,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path="/registrar-paciente" element={<RegistrarPaciente />} />
       <Route path="/evaluar-expediente" element={<EvaluarExpediente />} />
 
-      <Route
-        path="/analisis"
-        element={
-          <ProtectedRoute allowedRoles={['publico']}>
-            <Analisis />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/analisis" element={<Analisis />} /> 
 
 
     </Routes>

@@ -22,6 +22,18 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+app.use(
+  '/uploads',
+  (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET'); // Añade esto
+    next();
+  },
+  express.static('uploads')
+);
+
+
 const SECRET_KEY = 'tu_clave_secreta_super_segura_123!';
 
 // Configuración de la base de datos (sin cambios)
@@ -81,28 +93,124 @@ const upload = multer({
 });
 
 
+const { generatePDF } = require('./pdfGenerator');
+const UPLOADS_PATH = path.join(__dirname, 'uploads');
+
 app.post('/api/resultados', authenticate, async (req, res) => {
+  const connection = await pool.getConnection();
   try {
+    await connection.beginTransaction();
+    await connection.query('SET SESSION sql_mode = ""'); // Deshabilitar ONLY_FULL_GROUP_BY
+
     const { evaluacionId, severidad, descripcion } = req.body;
 
-    // Guardar en BD
-    const [result] = await pool.query(
-      `INSERT INTO resultados 
-      (evaluacion_id, severidad, descripcion) 
-      VALUES (?, ?, ?)`,
-      [evaluacionId, severidad, descripcion]
+    // 1. Validar datos de entrada
+    if (!evaluacionId || !severidad || !descripcion) {
+      return res.status(400).json({ error: 'Datos incompletos' });
+    }
+
+    // 2. Consulta SQL con validación de tablas
+    const [evaluacion] = await connection.query(`
+      SELECT 
+        e.id,
+        e.primer_nombre,
+        e.segundo_nombre,
+        e.primer_apellido,
+        e.segundo_apellido,
+        e.edad,
+        e.genero,
+        e.direccion,
+        e.raza_etnia,
+        ciu.nombre AS ciudad,
+        pai.nombre AS pais,
+        a.historial_familiar,
+        a.cirugias_oculares,
+        a.traumatismos_oculares,
+        s.vision_borrosa,
+        s.intensidad_borrosa,
+        s.fotofobia,
+        s.dificultad_noche,
+        s.cambios_lentes,
+        s.vision_doble,
+        s.halos_luces,
+        s.otros_sintomas,
+        h.ultimo_examen,
+        h.uso_lentes,
+        h.tipo_lentes,
+        GROUP_CONCAT(d.nombre SEPARATOR ', ') AS diagnosticos
+      FROM evaluaciones e
+      LEFT JOIN antecedentes_medicos a ON e.id = a.evaluacion_id
+      LEFT JOIN sintomas_actuales s ON e.id = s.evaluacion_id
+      LEFT JOIN historial_salud h ON e.id = h.evaluacion_id
+      LEFT JOIN evaluacion_diagnosticos ed ON e.id = ed.evaluacion_id
+      LEFT JOIN diagnosticos d ON ed.diagnostico_id = d.id
+      LEFT JOIN ciudades ciu ON e.ciudad_id = ciu.id
+      LEFT JOIN paises pai ON ciu.pais_id = pai.id
+      WHERE e.id = ?
+      GROUP BY e.id`, [evaluacionId]
     );
 
-    res.json({ success: true, id: result.insertId });
+    if (evaluacion.length === 0) {
+      return res.status(404).json({ error: 'Evaluación no encontrada' });
+    }
+
+    // 3. Procesar fotos
+    const [fotos] = await connection.query(
+      'SELECT tipo, url_imagen FROM fotografias WHERE evaluacion_id = ?',
+      [evaluacionId]
+    );
+
+    const fotosObj = fotos.reduce((acc, foto) => ({
+      ...acc,
+      [foto.tipo]: foto.url_imagen?.split('/').pop() || ''
+    }), {});
+
+    // 4. Generar PDF
+    const pdfFileName = await generatePDF(
+      evaluacion[0],
+      fotosObj,
+      { severidad, descripcion },
+      UPLOADS_PATH
+    );
+
+    // 5. Insertar resultado en la base de datos
+    const [result] = await connection.query(
+      `INSERT INTO resultados 
+      (evaluacion_id, severidad, descripcion, pdf_path) 
+      VALUES (?, ?, ?, ?)`,
+      [evaluacionId, severidad, descripcion, pdfFileName]
+    );
+
+    await connection.query(
+      `UPDATE evaluaciones 
+      SET resultado_id = ?
+      WHERE id = ?`,
+      [result.insertId, evaluacionId]
+    );
+
+    await connection.commit();
+
+    res.json({
+      success: true,
+      pdfUrl: `/uploads/${pdfFileName}`
+    });
+
   } catch (error) {
+    await connection.rollback();
+    console.error('Error en /api/resultados:', { // ← Log detallado
+      message: error.message,
+      stack: error.stack,
+      body: req.body
+    });
     res.status(500).json({
       success: false,
-      error: 'Error guardando resultados'
+      error: 'Error procesando análisis',
+      details: error.message // Solo en desarrollo
     });
+  } finally {
+    connection.release();
   }
 });
-
-
 
 
 // Endpoint para subir fotos - Versión corregida
@@ -207,6 +315,97 @@ app.post('/api/evaluaciones/:id/fotografias', authenticate, upload.fields([
 
 
 
+app.get('/api/evaluaciones/:id/fotografias', authenticate, async (req, res) => {
+  try {
+    const [fotos] = await pool.query(
+      'SELECT tipo, url_imagen FROM fotografias WHERE evaluacion_id = ?',
+      [req.params.id]
+    );
+
+    // Convertir array a objeto { ojo_izquierdo: url, ojo_derecho: url }
+    const fotosObj = fotos.reduce((acc, foto) => {
+      acc[foto.tipo] = `http://localhost:5000/uploads/${foto.url_imagen}`;
+      return acc;
+    }, {});
+
+    res.json(fotosObj);
+  } catch (error) {
+    res.status(500).json({ error: 'Error obteniendo fotografías' });
+  }
+});
+
+
+
+
+
+
+app.get('/api/evaluaciones/:id', authenticate, async (req, res) => {
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    const [evaluacion] = await connection.query(
+      `SELECT 
+        e.*,
+        a.historial_familiar, 
+        a.cirugias_oculares, 
+        a.traumatismos_oculares,
+        s.vision_borrosa, 
+        s.intensidad_borrosa, 
+        s.fotofobia, 
+        s.dificultad_noche,
+        h.ultimo_examen, 
+        h.uso_lentes, 
+        h.tipo_lentes,
+        r.severidad, 
+        r.descripcion as resultado_descripcion,
+        r.pdf_path
+      FROM evaluaciones e
+      LEFT JOIN antecedentes_medicos a ON e.id = a.evaluacion_id
+      LEFT JOIN sintomas_actuales s ON e.id = s.evaluacion_id
+      LEFT JOIN historial_salud h ON e.id = h.evaluacion_id
+      LEFT JOIN resultados r ON e.resultado_id = r.id
+      WHERE e.id = ?`,
+      [req.params.id]
+    );
+
+    if (evaluacion.length === 0) {
+      return res.status(404).json({ error: 'Evaluación no encontrada' });
+    }
+
+    // Formatear datos para incluir valores por defecto
+    const evaluacionData = {
+      ...evaluacion[0],
+      severidad: evaluacion[0].severidad || 'No analizado',
+      resultado_descripcion: evaluacion[0].resultado_descripcion || 'Análisis pendiente',
+      pdf_path: evaluacion[0].pdf_path || null
+    };
+
+    await connection.commit();
+    res.json(evaluacionData);
+
+  } catch (error) {
+    await connection.rollback();
+    console.error('Error en GET evaluación:', error);
+    res.status(500).json({
+      error: 'Error obteniendo evaluación',
+      details: error.message
+    });
+  } finally {
+    connection.release();
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Modificar endpoint de login
@@ -227,7 +426,7 @@ app.post('/api/login', async (req, res) => {
     const token = jwt.sign(
       { userId: rows[0].id, role: rows[0].role },
       SECRET_KEY,
-      { expiresIn: '2h' }
+      { expiresIn: '4h' }
     );
 
     res.cookie('token', token, {
