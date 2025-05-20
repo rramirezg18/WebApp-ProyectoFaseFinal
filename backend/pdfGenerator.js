@@ -17,7 +17,7 @@ const generatePDF = async (evaluacion, fotos, resultado, uploadsPath) => {
 
     // ===== PÁGINA 1: DATOS DEL PACIENTE =====
     doc.fontSize(18)
-      .text('Informe de Evaluación Ocular', { align: 'center' })
+      .text('Informe de Evaluación', { align: 'center' })
       .moveDown(0.5);
 
     // Sección de información personal

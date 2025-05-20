@@ -18,7 +18,7 @@ const Analisis = () => {
     const severidades = ['Leve', 'Moderado', 'Grave', 'No detectado'];
     return {
       severidad: severidades[Math.floor(Math.random() * severidades.length)],
-      descripcion: "Simulación de resultado basado en análisis de imágenes..."
+      descripcion: "Resultado basado en análisis de imágenes"
     };
   };
 

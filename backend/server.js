@@ -314,6 +314,79 @@ app.post('/api/evaluaciones/:id/fotografias', authenticate, upload.fields([
 
 
 
+// Obtener todas las evaluaciones para profesionales
+app.get('/api/evaluaciones-profesional', authenticate, async (req, res) => {
+  const connection = await pool.getConnection();
+  try {
+    // Verificar rol de profesional
+    if (req.user.role !== 'profesional') {
+      return res.status(403).json({ error: 'Acceso no autorizado' });
+    }
+
+    const [evaluaciones] = await connection.query(`
+      SELECT 
+        e.id,
+        CONCAT(e.primer_nombre, ' ', e.primer_apellido) AS paciente_completo,
+        DATE_FORMAT(e.fecha_creacion, '%d/%m/%Y') AS fecha,
+        r.severidad,
+        r.pdf_path
+      FROM evaluaciones e
+      LEFT JOIN resultados r ON e.resultado_id = r.id
+      ORDER BY e.fecha_creacion DESC`
+    );
+
+    res.json(evaluaciones);
+  } catch (error) {
+    console.error('Error en evaluaciones profesionales:', error);
+    res.status(500).json({ error: 'Error obteniendo evaluaciones' });
+  } finally {
+    connection.release();
+  }
+});
+
+
+
+
+
+// En server.js
+// En server.js, modificar el endpoint /api/evaluaciones:
+app.get('/api/evaluaciones', authenticate, async (req, res) => {
+  const connection = await pool.getConnection();
+  try {
+    // Obtener perfil_id del usuario
+    const [perfil] = await connection.query(
+      'SELECT perfil_id FROM perfiles WHERE user_id = ?',
+      [req.user.id]
+    );
+
+    if (!perfil.length) return res.json([]);
+
+    // Consulta corregida con JOIN correcto
+    const [evaluaciones] = await connection.query(`
+      SELECT 
+        e.id,
+        CONCAT(e.primer_nombre, ' ', e.primer_apellido) AS paciente,
+        DATE_FORMAT(e.fecha_creacion, '%d/%m/%Y') AS fecha,
+        r.severidad,
+        r.pdf_path
+      FROM evaluaciones e
+      LEFT JOIN resultados r ON e.resultado_id = r.id
+      WHERE e.perfil_id = ?
+      ORDER BY e.fecha_creacion DESC`,
+      [perfil[0].perfil_id]
+    );
+
+    res.json(evaluaciones);
+  } catch (error) {
+    console.error('Error en historial:', error);
+    res.status(500).json({ error: 'Error obteniendo evaluaciones' });
+  } finally {
+    connection.release();
+  }
+});
+
+
+
 
 app.get('/api/evaluaciones/:id/fotografias', authenticate, async (req, res) => {
   try {

@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import './DashboardProfesional.css'; // Reutilizar estilos
 
 const DashboardPublico = () => {
   const navigate = useNavigate();
