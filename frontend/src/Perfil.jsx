@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // 1. Importar el hook
+import './Perfil.css';
 
 const Perfil = () => {
+  const navigate = useNavigate(); // 2. Inicializar el hook
   const [formData, setFormData] = useState({
     primer_nombre: '',
     segundo_nombre: '',
@@ -127,6 +130,13 @@ const Perfil = () => {
 
         <button type="submit">Guardar Perfil</button>
       </form>
+        <button
+          onClick={() => navigate('/dashboard-publico')}
+          className="btn-volver"
+        >
+          ← Volver al Inicio
+        </button>
+
     </div>
   );
 };
