@@ -188,3 +188,22 @@ button {
     width: 100%;
   }
 }
+
+.camera-button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  background: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  color: #6c757d;
+  cursor: not-allowed;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+}
+
+.camera-button:disabled {
+  opacity: 0.7;
+  background-color: #e9ecef;
+}
