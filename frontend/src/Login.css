@@ -289,6 +289,22 @@
     }
 }
 
+.forgot-password-link {
+    margin: 0.5em 0;
+    font-size: 0.9em;
+}
+
+.forgot-password-link a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password-link a:hover {
+    color: #2e3842;
+    text-decoration: underline;
+}
+
 @media screen and (max-width: 736px) { /* 'small' breakpoint */
     .spectral-landing-background .wrapper {
         padding-top: 2em; 

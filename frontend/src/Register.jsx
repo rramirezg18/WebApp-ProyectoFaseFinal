@@ -199,8 +199,8 @@ const Register = () => {
                                             onChange={(e) => setRole(e.target.value)}
                                             disabled={isSubmitting}
                                         >
-                                            <option value="publico">Público General</option>
-                                            <option value="profesional">Profesional de la Salud</option>
+                                            <option value="publico">Público</option>
+                                            <option value="profesional">Profesional</option>
                                         </select>
                                     </div>
 
